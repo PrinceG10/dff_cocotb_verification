@@ -1,0 +1,18 @@
+import cocotb
+import random
+from cocotb.triggers import FallingEdge
+from cocotb.triggers import Timer
+from cocotb.clock import Clock
+from cocotb.result import TestFailure
+
+@cocotb.test()
+async def test_dff(dut): 
+    
+    dut.log.info("Start of test ")
+    clock = Clock(dut.clk, 10)
+    cocotb.fork(clock.start())
+    for i in range (10):
+        val = random.randint(0,1)
+        dut.d<= val
+        await FallingEdge(dut.clk)
+        assert dut.q == val, "output q was incorrecton the {}th cycle ". format (1)
